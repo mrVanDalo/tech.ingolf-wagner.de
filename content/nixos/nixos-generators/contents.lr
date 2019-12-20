@@ -1,0 +1,21 @@
+title: nixos-generators
+---
+flows:
+
+#### text ####
+text:
+
+# NixOS Generators
+
+Today I'll talk about a nice project which might your live simpler.
+[nixos-generators](https://github.com/nixos-community/nixos-generators)
+
+## Creating installation ISO
+
+You want to create a iso that alreay knows the wifi password and starts sshd and root knows your ssh key?
+This is you choice.
+
+---
+info: write it
+---
+_discoverable: no

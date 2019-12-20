@@ -1,0 +1,12 @@
+_model: page
+---
+title: Cheat Sheets
+---
+flows:
+
+#### article_list ####
+title: Cheat Sheets
+---
+info: Some documents which have a `How To` question answer scheme.
+---
+_discoverable: no

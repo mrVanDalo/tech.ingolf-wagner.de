@@ -1,0 +1,36 @@
+title: monitoring
+---
+_discoverable: no
+---
+_hidden: no
+---
+flows:
+
+#### text ####
+text:
+
+# Metrics
+
+## alerts
+
+* mail
+
+## what metrics?
+
+* netdata
+* prometheus for alerts
+* grafana for nice views
+
+## logs 
+
+### heavy logserver
+
+* graylog
+* elk
+
+### logserver for forensics
+
+* analyse logs on the server itself
+* use rsyslog to send logs to another server
+---
+info: How to monitor your server setup?

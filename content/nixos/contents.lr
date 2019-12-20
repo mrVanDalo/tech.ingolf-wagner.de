@@ -1,0 +1,14 @@
+_model: page-articles
+---
+title: NixOS
+---
+flows:
+
+#### text ####
+text:
+
+# NixOS Articles
+
+These are some Articles about my favorite Operationsystem [NixOS](https://nixos.org)
+#### article_list ####
+title: NixOS Articles

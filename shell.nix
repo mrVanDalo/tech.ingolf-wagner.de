@@ -8,6 +8,7 @@ let
   '';
 
   run = pkgs.writers.writeBashBin "run" ''
+    ${pkgs.cabal-install}/bin/cabal run site -- clean
     ${pkgs.cabal-install}/bin/cabal run site -- watch
   '';
 in pkgs.mkShell { buildInputs = with pkgs; [ updateCabal run ]; }
