@@ -1,0 +1,47 @@
+:root {
+  font-family: @font-family;
+}
+
+h1,h2,h3,h4,h5 {
+  font-family: @font-header;
+  color: @color-base1;
+  margin-bottom: .3em;
+}
+
+a {
+  text-decoration: none;
+  color: @color-blue;
+  &:visited{
+    color: @color-blue;
+  }
+  &:hover {
+    background-color: @color-blue;
+    color: @color-base03;
+    transition: color 300ms,background-color 300ms;
+  }
+}
+
+.remark-slide-content{
+  background-color: @color-base03;
+  color: @color-base2;
+}
+
+strong{
+  color: @color-violet;
+}
+
+em{
+  color: @color-cyan;
+}
+
+.remark-code, .remark-inline-code {
+  font-family: @font-code;
+  color: @color-yellow;
+}
+
+
+// pre {
+//   background-color: @color-base02;
+//   padding: .2em;
+//   border-radius: .5em;
+// }

@@ -11,6 +11,12 @@ main =
     match "images/*" $ do
       route idRoute
       compile copyFileCompiler
+    -- css files
+    match "src/lessc/page/main.less" $ do
+      route  $ customRoute $ const "src/main.css"
+      compile $ getResourceString >>=
+        withItemBody (unixFilter "lessc" [ "-", "--include-path=./src/lessc/page/"]) >>=
+        return . fmap compressCss
     match "css/*" $ do
       route idRoute
       compile compressCssCompiler
