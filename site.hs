@@ -30,8 +30,7 @@ main =
     match "new-content/**" $ do
       route $ gsubRoute "new-content/" (const "") `composeRoutes` setExtension "html"
       compile $
-        pandocCompiler >>= loadAndApplyTemplate "templates/post.html" postCtx >>=
-        loadAndApplyTemplate "templates/default.html" postCtx >>=
+        pandocCompiler >>= loadAndApplyTemplate "templates/new.html" postCtx >>=
         relativizeUrls
     match "posts/*" $ do
       route $ setExtension "html"

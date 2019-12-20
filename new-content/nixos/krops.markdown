@@ -1,6 +1,12 @@
 ---
 title: krops
-date: 2012-10-20
+info: |
+  krops is an alternative to
+  NixOps trying to solve some of theses flaws,
+  with some very simple concepts.
+  In this article we will checkout on how to deploy a server
+  using krops and discuss all involved parameters and steps.
+date: 2018-08-15
 ---
 
 # krops
@@ -139,7 +145,7 @@ $> nix-build ./krops.nix -A server01 && ./result
 You need to make sure you have ssh access to the root user on `server01.mydomain.org`
 and `git` is installed on `server01.mydomain.org`.
 
-#### panel 
+<div class="panel panel-info">
 
 If you run this command the first time you will most likely get a message like
 
@@ -150,7 +156,7 @@ error: missing sentinel file: server01.mydomain.org:/var/src/.populate
 This is because you need to create `/var/src/.populate` before krops will do anything.
 Once that file is created, you can run the command `./result` again.
 
-#### text 
+</div>
 
 krops will copy the file `configuration.nix` to `/var/src/nixos-config` on `server01`
 and will clone `nixpkgs` into `/var/src/nixpkgs`.
@@ -189,15 +195,14 @@ It is the result of `krops.writeDeploy` with parameters
 * `source` the set of files and folders which should be made available beneath
   `/var/src` on the target
 
-#### panel 
+<div class="panel panel-info">
 
 `target` takes more argument parts than just the host,
 you can for example set it to `root@server01:4444/etc/krops/`
 
 to change the ssh port and the target folder it should be copied.
 
-#### text 
-text:
+</div>
 
 
 
@@ -253,13 +258,12 @@ source =  lib.evalSource [
 
 This copies `./config` to `/var/src/config` and creates a symlink
 `/var/src/nix-config` to `config/server01/configuration.nix`.
-#### panel 
-panel_type: warning
+
+<div class="panel panel-warning">
 
 krops will not check if the target is valid.
 
-#### text
-
+</div>
 
 
 ### Git Repositories
@@ -316,11 +320,9 @@ source = lib.evalSource [
 This copies `secrets/server01` to `/var/src/secrets` after it is decrypted.
 You will be prompted to enter the password.
 
-#### panel
-
-text: The files in `/var/src/secrets` will be unencrypted!
-
-#### text
+<div class="panel panel-warning">
+The files in `/var/src/secrets` will be unencrypted!
+</div>
 
 
 ## How to use Sources in configuration.nix
@@ -513,13 +515,3 @@ environment.variables.NIX_PATH = lib.mkForce "/var/src";
 ```
 
 And `nix-shell` will also use `nixpkgs` from `/var/src`
----
-info:
-
-krops is an alternative to
-NixOps trying to solve some of theses flaws,
-with some very simple concepts.
-In this article we will checkout on how to deploy a server
-using krops and discuss all involved parameters and steps.
----
-date: 2018-08-15
