@@ -1,8 +1,8 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 
-import           Data.Monoid (mappend)
-import           Hakyll
+import Data.Monoid (mappend)
+import Hakyll
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -20,8 +20,9 @@ main =
         pandocCompiler >>=
         loadAndApplyTemplate "templates/default.html" defaultContext >>=
         relativizeUrls
+    -- the new content out there
     match "new-content/**" $ do
-      route $ setExtension "html"
+      route $ gsubRoute "new-content/" (const "") `composeRoutes` setExtension "html"
       compile $
         pandocCompiler >>= loadAndApplyTemplate "templates/post.html" postCtx >>=
         loadAndApplyTemplate "templates/default.html" postCtx >>=
