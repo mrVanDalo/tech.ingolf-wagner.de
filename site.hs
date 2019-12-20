@@ -71,6 +71,7 @@ main =
 postCtx :: Context String
 postCtx = dateField "date" "%Y-%m-%d" `mappend` defaultContext
 
+-- https://svejcar.dev/posts/2019/11/27/table-of-contents-in-hakyll/
 pandocCompilerWithToc =
   pandocCompilerWith
     defaultHakyllReaderOptions
