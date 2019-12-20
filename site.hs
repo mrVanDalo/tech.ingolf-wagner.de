@@ -3,6 +3,7 @@
 
 import Data.Monoid (mappend)
 import Hakyll
+import Text.Pandoc.Options
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -13,9 +14,11 @@ main =
       compile copyFileCompiler
     -- css files
     match "src/lessc/page/main.less" $ do
-      route  $ customRoute $ const "src/main.css"
-      compile $ getResourceString >>=
-        withItemBody (unixFilter "lessc" [ "-", "--include-path=./src/lessc/page/"]) >>=
+      route $ customRoute $ const "src/main.css"
+      compile $
+        getResourceString >>=
+        withItemBody
+          (unixFilter "lessc" ["-", "--include-path=./src/lessc/page/"]) >>=
         return . fmap compressCss
     match "css/*" $ do
       route idRoute
@@ -28,9 +31,11 @@ main =
         relativizeUrls
     -- the new content out there
     match "new-content/**" $ do
-      route $ gsubRoute "new-content/" (const "") `composeRoutes` setExtension "html"
+      route $
+        gsubRoute "new-content/" (const "") `composeRoutes` setExtension "html"
       compile $
-        pandocCompiler >>= loadAndApplyTemplate "templates/new.html" postCtx >>=
+        pandocCompilerWithToc >>=
+        loadAndApplyTemplate "templates/new.html" postCtx >>=
         relativizeUrls
     match "posts/*" $ do
       route $ setExtension "html"
@@ -63,6 +68,27 @@ main =
           relativizeUrls
     match "templates/*" $ compile templateBodyCompiler
 
---------------------------------------------------------------------------------
 postCtx :: Context String
 postCtx = dateField "date" "%Y-%m-%d" `mappend` defaultContext
+
+pandocCompilerWithToc =
+  pandocCompilerWith
+    defaultHakyllReaderOptions
+    (defaultHakyllWriterOptions
+       { writerNumberSections = False
+       , writerTableOfContents = True
+       , writerTOCDepth = 3
+       , writerTemplate =
+           Just
+             "<nav id=\"TableOfContents\">$toc$</nav><div class=\"content\">$body$</div>"
+       })
+
+pandocCompilerWithoutToc =
+  pandocCompilerWith
+    defaultHakyllReaderOptions
+    (defaultHakyllWriterOptions
+       { writerNumberSections = False
+       , writerTableOfContents = False
+       , writerTOCDepth = 3
+       , writerTemplate = Just "<div class=\"content\">$body$</div>"
+       })
