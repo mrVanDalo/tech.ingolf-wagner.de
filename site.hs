@@ -2,14 +2,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Data.Monoid (mappend)
+import Data.Maybe (isNothing, isJust)
 import Hakyll
 import Text.Pandoc.Options
 
 --------------------------------------------------------------------------------
 main :: IO ()
 main =
-  hakyll $ do
+  hakyll $
     -- copy all images
+   do
     match "images/*" $ do
       route idRoute
       compile copyFileCompiler
@@ -22,7 +24,7 @@ main =
           (unixFilter "lessc" ["-", "--include-path=./src/lessc/page/"]) >>=
         return . fmap compressCss
     -- the new content out there
-    match "new-content/**" $ do
+    matchMetadata "new-content/**" (isNothing . lookupString "draft") $ do
       route $
         gsubRoute "new-content/" (const "") `composeRoutes` setExtension "html"
       compile $
@@ -34,7 +36,7 @@ main =
       compile $ do
         newContent <- loadAll "new-content/**"
         let indexCtx =
-              listField "posts" postCtx (recentFirst $ newContent ) `mappend`
+              listField "posts" postCtx (recentFirst $ newContent) `mappend`
               constField "title" "Home" `mappend`
               defaultContext
         pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
