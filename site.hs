@@ -24,7 +24,7 @@ main =
           (unixFilter "lessc" ["-", "--include-path=./src/lessc/page/"]) >>=
         return . fmap compressCss
     -- the new content out there
-    matchMetadata "new-content/**" (isNothing . lookupString "draft") $ do
+    matchMetadata "content/**" (isNothing . lookupString "draft") $ do
       route $
         gsubRoute "new-content/" (const "") `composeRoutes` setExtension "html"
       compile $
