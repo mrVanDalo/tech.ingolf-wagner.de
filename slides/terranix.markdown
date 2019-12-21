@@ -1,18 +1,10 @@
-_model: remarkjs
 ---
 title: terranix
----
 date: 2019-08-23
----
 info: An introduction on terranix for nixos users.
----
 scheme: light
+qrcode-link: qr-tech-ingolf-wag.svg
 ---
-flows:
-
-#### remark-js-block ####
-text:
-
 
 # What is Terraform
 
@@ -20,14 +12,14 @@ text:
 * AWS, Azure, Hetzner, Google Cloud, Akamai, Github, Grafana, [and more](https://www.terraform.io/docs/providers/index.html)
 * comes with a painful language called [HCL](https://www.terraform.io/docs/configuration/syntax.html).
 
---
+---
 
 # What is terranix?
 
 * Tool to render nix-modules to terraform json
 * Is much more pleasant and powerful than [HCL](https://www.terraform.io/docs/configuration/syntax.html) 
-#### remark-js-block ####
-text:
+
+---
 
 # Workflow
 
@@ -38,8 +30,7 @@ config.nix → config.tf.json → terraform.state
 ```shell
 terranix > config.tf.json && terraform init && terraform apply
 ```
-#### remark-js-block ####
-text:
+---
 
 ## config.nix example (provider)
 
@@ -52,7 +43,8 @@ provider.github = {
   organization = "nixos-community";
 };
 ```
------
+---
+
 ## config.nix example (code)
 ```nix
 # Create a github repository
@@ -71,8 +63,8 @@ resource.github_repository_collaborator.a_repo_collaborator = {
 # query an existing user
 data.github_user.palo.username = "mrVanDalo";
 ```
-#### remark-js-block ####
-text:
+
+---
 
 # Merging configuration
 
@@ -94,8 +86,7 @@ resource.hcloud_server.example.server_type = "cx11";
 # config-production.nix
 resource.hcloud_server.example.server_type = "cx31";
 ```
-#### remark-js-block ####
-text:
+---
 
 # a basic setup
 
@@ -111,8 +102,8 @@ in ''
   ${pkgs.terraform}/bin/terraform "$@"
 '';
 ```
-#### remark-js-block ####
-text:
+
+---
 
 # Road  map
 
@@ -120,5 +111,4 @@ text:
 * resource merging solution that is easy to hack, and adept to even with a large code base.
 * always be backwards compatible.
 * Better documentation.
----
-qrcode: qr-tech-ingolf-wag.svg
+

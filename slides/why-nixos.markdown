@@ -1,33 +1,30 @@
-_model: remarkjs
 ---
 title: Why NixOS
----
 date: 2019-04-26
+scheme: light
+qrcode-link: why-nixos-qrcode.svg
+info: |
+  A Presentation about NixOS which only focuses on the positive sides of NixOS.
+  It should give listeners an impression on what they gain,
+  when using NixOS as their Operation System.
 ---
-flows:
-
-#### remark-js-block ####
-text:
-
 # Why NixOS
 
 NixOS is not perfect (but very very good).
 
-Let's look at the good parts.
-#### remark-js-block ####
-text:
+Let&#39;s look at the good parts.
+---
 
-# What is NixOS ?
+  # What is NixOS ?
 
 * Operation System based on [Nix Package manager](https://nixos.org/nix/).
 * builtin `provisioning` system.
 * `x86_32`, `x86_64`, `ARM6`, `ARM7`, `ARM8`, `AARCH64` (and many more).
 * `channels` ( stable, unstable, ... ).
 * 2 stable releases per year.
-#### remark-js-block ####
-text:
+---
 
-# NixOS Features
+  # NixOS Features
 
 * [immutable](https://en.wikipedia.org/wiki/Immutable_object) (not only [idempotent](https://en.wikipedia.org/wiki/Idempotence))
 * rollbacks (without re-provisioning).
@@ -38,7 +35,7 @@ with [modding](https://nixos.org/nixpkgs/manual/#sec-overrides)
 * [container-system](https://nixos.org/nixos/manual/#ch-containers) ([systemd-nspawn](https://wiki.archlinux.org/index.php/Systemd-nspawn) based).
 * cross-compilation (using [binfmt](https://en.wikipedia.org/wiki/Binfmt_misc)).
 
------
+---
 ### configuration.nix Example
 ```nix
 { config, pkgs, ... }:
@@ -48,12 +45,12 @@ with [modding](https://nixos.org/nixpkgs/manual/#sec-overrides)
     ./systemd-example.nix
   ];
 
-  networking.hostName = "mymachine";
+  networking.hostName = &#34;mymachine&#34;;
 
-  time.timeZone = "Europe/Berlin";
+  time.timeZone = &#34;Europe/Berlin&#34;;
 
   users.users.myuser = {
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ &#34;wheel&#34; &#34;networkmanager&#34; ];
     isNormalUser = true;
   };
 
@@ -62,7 +59,7 @@ with [modding](https://nixos.org/nixpkgs/manual/#sec-overrides)
   serivce.avahi.enable = true;
 }
 ```
------
+---
 ### SystemD Service Example
 
 ```nix
@@ -70,8 +67,8 @@ with [modding](https://nixos.org/nixpkgs/manual/#sec-overrides)
 let
   myWebsite = pkgs.fetchgit {
     src = https://github.com/mrVanDalo/landingpage.git;
-    rev = "f67336e0cc97c8dd118d3cafb899bce7e60280e8";
-    sha = "03g8b6zwrg9jyvg9iipd3dfpfimvq5qn0cxa3b24skqq3ap4wcgk";
+    rev = &#34;f67336e0cc97c8dd118d3cafb899bce7e60280e8&#34;;
+    sha = &#34;03g8b6zwrg9jyvg9iipd3dfpfimvq5qn0cxa3b24skqq3ap4wcgk&#34;;
   };
 in {
 
@@ -80,24 +77,23 @@ in {
   systemd.services.mypage = {
     enable = true;
     serviceConfig.User = config.users.users.mypageuser.name;
-    wantedBy = [ "multi-user.target" ];
-    script = /* sh */ ''
+    wantedBy = [ &#34;multi-user.target&#34; ];
+    script = /* sh */ &#39;&#39;
       cd ${myWebsite}/docs
       ${pkgs.python}/bin/python -m SimpleHTTPServer 9000
-    '';
+    &#39;&#39;;
   }
 
   networking.firewall.allowedTCPPorts = [ 9000 ];
 
 }
 ```
-#### remark-js-block ####
-text:
+---
 
-# Nix-Shell
+  # Nix-Shell
 
 * shell *(bash)*  with modified run-time environment.
-* software is **not** installed "system-wide"
+* software is **not** installed &#34;system-wide&#34;
 
 --
 
@@ -106,17 +102,17 @@ text:
 nix-shell -p qtchan
 ```
 
------
+---
 ## shell.nix example
 
 ```nix
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import &lt;nixpkgs&gt; {} }:
 let
-  buildScript = pkgs.writers.writeDashBin "build" /* sh */ ''
+  buildScript = pkgs.writers.writeDashBin &#34;build&#34; /* sh */ &#39;&#39;
     ${pkgs.lessc}/bin/lessc \
       ${toString ./src/lessc/main.less} \
       ${toString ./assets/generated/main.css}
-  '';
+  &#39;&#39;;
 in pkgs.mkShell {
   buildInputs = [
     pkgs.elmPackages.elm
@@ -124,15 +120,14 @@ in pkgs.mkShell {
     buildScript
   ];
 
-  shellHook = ''
+  shellHook = &#39;&#39;
     HISTFILE=${toString ./.history}
-  '';
+  &#39;&#39;;
 }
 ```
-#### remark-js-block ####
-text:
+---
 
-# NixOS Generators
+  # NixOS Generators
 
 community driven [tool](https://github.com/nix-community/nixos-generators)
 to create various images.
@@ -156,10 +151,9 @@ build sd card for Raspberry PI
 nixos-generate --configuration ./config.nix \
   --format sd-aarch64 --system aarch64-linux 
 ```
-#### remark-js-block ####
-text:
+---
 
-# NixOS Containers
+  # NixOS Containers
 
 * *sub*configuration.nix
 * mount folders
@@ -170,10 +164,9 @@ text:
 ## Main use-case
 
 multiple instances of same service *(costs almost no overhead)*.
-#### remark-js-block ####
-text:
+---
 
-### NixOS Container Example
+  ### NixOS Container Example
 
 ```nix
 # creates a systemd service container@database96
@@ -196,10 +189,9 @@ containers.database10.config = { config, pkgs, ... }:
   }
 };
 ```
-#### remark-js-block ####
-text:
+---
 
-# There is MUUCH moar!
+  # There is MUUCH moar!
 
 * [Home-Manager](https://github.com/rycee/home-manager) get rid of  `.dot_file` mess.
 * [NixOS-Shell](https://github.com/chrisfarms/nixos-shell) like `nix-shell` + NixOS modules.
@@ -209,13 +201,12 @@ text:
 * [simple-nixos-mailserver](https://gitlab.com/simple-nixos-mailserver/nixos-mailserver) a mailserver module.
 * [TerraNix](https://github.com/mrVanDalo/terranix) generate [terraform](https://www.terraform.io/) configuration.
 * [cabal2nix](https://github.com/NixOS/cabal2nix), [pypi2nix](https://github.com/garbas/pypi2nix), [elm2nix](https://github.com/hercules-ci/elm2nix) create `shell.nix` for programming languages.
-#### remark-js-block ####
-text:
+---
 
-# How to start?
+  # How to start?
 
 You liked what you saw?
-Can't wait to try it out?
+Can&#39;t wait to try it out?
 
 ## Virtual Machine
 
@@ -224,7 +215,7 @@ Can't wait to try it out?
 * run `nixos-rebuild switch`
 * get a feeling for it
 * install a computer with your `/etc/nixos/configuration.nix`
------
+---
 ## Keep in touch
 
 * irc.freenode.net 
@@ -234,13 +225,3 @@ Can't wait to try it out?
 * [Discourse](https://discourse.nixos.org/)
 * [NixOS weekly](https://weekly.nixos.org/)
 * [Github](https://github.com/nixos)
----
-scheme: light
----
-info:
-
-A Presentation about NixOS which only focuses on the positive sides of NixOS.
-It should give listeners an impression on what they gain,
-when using NixOS as their Operation System.
----
-qrcode: qrcode.svg

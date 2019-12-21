@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+$if(title)$
+<title>$title$</title>
+$else$
+<title>Presentation</title>
+$endif$
+
+$if(scheme)$
+<link rel="stylesheet" href="/src/remark-$scheme$.css">
+$else$
+<link rel="stylesheet" href="/src/remark-light.css">
+$endif$
+
+</head>
+<body>
+<textarea id="source">
+
+$body$
+
+---
+
+
+# Thank you
+
+$if(qrcode-link)$
+<div style="text-align: center;">
+<img src="/images/$qrcode-link$" style="width: 70%;">
+</div>
+$endif$
+
+</textarea>
+
+    <script src="/static/remark-latest.min.js"> </script>
+    <script>
+     var slideshow = remark.create({
+       highlightLanguage: 'nix',
+       $if(scheme)$
+       highlightStyle: 'solarized-$scheme$',
+       $else$
+       highlightStyle: 'solarized-light',
+       $endif$
+     });
+    </script>
+</body>
+</html>

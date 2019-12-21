@@ -15,6 +15,9 @@ main =
     match "images/*" $ do
       route idRoute
       compile copyFileCompiler
+    match "static/*" $ do
+      route idRoute
+      compile copyFileCompiler
     -- css files
     match "src/lessc/page/main.less" $ do
       route $ customRoute $ const "src/main.css"
@@ -23,6 +26,33 @@ main =
         withItemBody
           (unixFilter "lessc" ["-", "--include-path=./src/lessc/page/"]) >>=
         return . fmap compressCss
+    match "src/lessc/remark/main-dark.less" $ do
+      route $ customRoute $ const "src/remark-dark.css"
+      compile $
+        getResourceString >>=
+        withItemBody
+          (unixFilter "lessc" ["-", "--include-path=./src/lessc/remark/"]) >>=
+        return . fmap compressCss
+    match "src/lessc/remark/main-light.less" $ do
+      route $ customRoute $ const "src/remark-light.css"
+      compile $
+        getResourceString >>=
+        withItemBody
+          (unixFilter "lessc" ["-", "--include-path=./src/lessc/remark/"]) >>=
+        return . fmap compressCss
+    -- slides
+    matchMetadata
+      "slides/**"
+      (\meta ->
+         case lookupString "draft" meta of
+           Just "false" -> True
+           Nothing -> True
+           _ -> False) $ do
+      route $ setExtension "html"
+      compile $
+        getResourceBody >>=
+        loadAndApplyTemplate "templates/remarkjs.html" postCtx >>=
+        relativizeUrls
     -- the new content out there
     matchMetadata
       "content/**"
@@ -32,7 +62,7 @@ main =
            Nothing -> True
            _ -> False) $ do
       route $
-        gsubRoute "new-content/" (const "") `composeRoutes` setExtension "html"
+        gsubRoute "content/" (const "") `composeRoutes` setExtension "html"
       compile $
         pandocCompilerWithToc >>=
         loadAndApplyTemplate "templates/layout.html" postCtx >>=
