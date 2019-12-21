@@ -1,7 +1,10 @@
-<ul>
+<ul class="pages-list">
     $for(posts)$
-        <li>
-            <a href="$url$">$title$</a> - $date$
+        <li class="page-list-item">
+          <a href="$url$">
+            <h3>$title$</h3>
+            <p> $info$ </p>
+          </a>
         </li>
     $endfor$
 </ul>
