@@ -24,7 +24,13 @@ main =
           (unixFilter "lessc" ["-", "--include-path=./src/lessc/page/"]) >>=
         return . fmap compressCss
     -- the new content out there
-    matchMetadata "content/**" (isNothing . lookupString "draft") $ do
+    matchMetadata
+      "content/**"
+      (\meta ->
+         case lookupString "draft" meta of
+           Just "false" -> True
+           Nothing -> True
+           _ -> False) $ do
       route $
         gsubRoute "new-content/" (const "") `composeRoutes` setExtension "html"
       compile $
@@ -34,7 +40,7 @@ main =
     match "index.markdown" $ do
       route $ setExtension "html"
       compile $ do
-        newContent <- loadAll "new-content/**"
+        newContent <- loadAll "content/**"
         let indexCtx =
               listField "posts" postCtx (recentFirst $ newContent) `mappend`
               constField "title" "Home" `mappend`
