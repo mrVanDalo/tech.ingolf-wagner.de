@@ -1,11 +1,9 @@
-title: Programming for Humans
 ---
-_discoverable: no
+title: Coding for Humans
+date: 2020-01-13
+info: Coding is hard, it seems. I frequently face the same problems.
+draft: true
 ---
-flows:
-
-#### text ####
-text:
 
 # Coding is hard
 
@@ -24,9 +22,6 @@ So use your testing framework and get familiar with concepts like Dependency Inj
 
 
 
-#### text ####
-text:
-
 # Variable names
 
 write me
@@ -34,8 +29,6 @@ write me
 ## One letter variable names are a no go
 
 write me
-#### text ####
-text:
 
 # Functions Queue and Functions calling functions
 
@@ -54,13 +47,9 @@ is bad, becaus this is basically one function.
 * functionA calls functionD
 
 This is good.
-#### text ####
-text:
 
 # Use variables to increase readability
 
 Readability is key. One-Liners are not an Art-form, even if you use comments to describe what you are doing.
 
 Example, lambdas in haskell.
----
-info: Coding is hard, it seems. I frequently face the same problems.

@@ -1,11 +1,11 @@
-_model: article
 ---
-title: bash
+title: Cheatsheet BASH
+date: 2020-11-11
+draft: true
+info: |
+  Bash is one of the most important tools out there
+  to maintain Operation Systems.
 ---
-flows:
-
-#### text ####
-text:
 
 # How to process Lines containing Spaces
 
@@ -16,10 +16,3 @@ find . -type f | while read line; do echo $line ; done
 ```
 
 will do the trick.
----
-info:
-
-Bash is one of the most important tools out there
-to maintain Operation Systems.
----
-_discoverable: yes
