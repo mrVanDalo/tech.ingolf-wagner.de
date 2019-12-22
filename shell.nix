@@ -12,5 +12,12 @@ let
     ${pkgs.cabal-install}/bin/cabal run site -- clean
     ${pkgs.cabal-install}/bin/cabal run site -- watch
   '';
-in pkgs.mkShell { buildInputs = with pkgs; [ updateCabal run lessc ]; }
+
+  deploy = pkgs.writers.writeBashBin "deploy" ''
+    cd ${toString ./.}
+    ${pkgs.cabal-install}/bin/cabal run site -- clean
+    ${pkgs.cabal-install}/bin/cabal run site -- build
+    ${pkgs.cabal-install}/bin/cabal run site -- deploy
+  '';
+in pkgs.mkShell { buildInputs = with pkgs; [ updateCabal run deploy lessc ]; }
 
