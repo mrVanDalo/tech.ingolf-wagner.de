@@ -87,6 +87,14 @@ main =
         pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
           loadAndApplyTemplate "templates/layout.html" indexCtx >>=
           relativizeUrls
+    match "about.markdown" $ do
+      route $ setExtension "html"
+      compile $ do
+        let indexCtx =
+              createDefaultIndex "about"
+        pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
+          loadAndApplyTemplate "templates/layout.html" indexCtx >>=
+          relativizeUrls
     match "index.markdown" $ do
       route $ setExtension "html"
       compile $ do
@@ -132,6 +140,7 @@ createDefaultIndex groupName =
         [ ("/", "main")
         , ("/articles.html", "articles")
         , ("/slides.html", "slides")
+        , ("/about.html", "about")
         ]
       listItem (path, label) active =
         let listPart content =
