@@ -64,7 +64,9 @@ main =
         gsubRoute "articles/" (const "") `composeRoutes` setExtension "html"
       compile $
         pandocCompilerWithToc >>=
-        loadAndApplyTemplate "templates/layout.html" (createDefaultIndex "articles")>>=
+        loadAndApplyTemplate
+          "templates/layout.html"
+          (createDefaultIndex "articles") >>=
         relativizeUrls
     match "slides.markdown" $ do
       route $ setExtension "html"
@@ -89,8 +91,7 @@ main =
     match "about.markdown" $ do
       route $ setExtension "html"
       compile $ do
-        let indexCtx =
-              createDefaultIndex "about"
+        let indexCtx = createDefaultIndex "about"
         pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
           loadAndApplyTemplate "templates/layout.html" indexCtx >>=
           relativizeUrls
