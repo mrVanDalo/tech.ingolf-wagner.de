@@ -1,10 +1,12 @@
---------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 
-import Data.Monoid (mappend)
-import Data.Maybe (isNothing, isJust)
-import Hakyll
-import Text.Pandoc.Options
+--------------------------------------------------------------------------------
+import           Data.Monoid         (mappend)
+import           Hakyll
+import           Text.Pandoc.Options
+
+import           Data.List           (isSuffixOf)
+import           System.FilePath     (splitExtension)
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -46,28 +48,31 @@ main =
       (\meta ->
          case lookupString "draft" meta of
            Just "false" -> True
-           Nothing -> True
-           _ -> False) $ do
+           Nothing      -> True
+           _            -> False) $ do
       route $ setExtension "html"
       compile $
         getResourceBody >>=
         loadAndApplyTemplate "templates/remarkjs.html" postCtx >>=
-        relativizeUrls
+        relativizeUrls >>=
+        deIndexURLs
     matchMetadata
       "articles/**"
       (\meta ->
          case lookupString "draft" meta of
            Just "false" -> True
-           Nothing -> True
-           _ -> False) $ do
+           Nothing      -> True
+           _            -> False) $ do
       route $
-        gsubRoute "articles/" (const "") `composeRoutes` setExtension "html"
+        directorizeRoute `composeRoutes` gsubRoute "articles/" (const "") `composeRoutes`
+        setExtension "html"
       compile $
         pandocCompilerWithToc >>=
         loadAndApplyTemplate
           "templates/layout.html"
           (createDefaultIndex "articles") >>=
-        relativizeUrls
+        relativizeUrls >>=
+        deIndexURLs
     match "slides.markdown" $ do
       route $ setExtension "html"
       compile $ do
@@ -77,7 +82,8 @@ main =
               createDefaultIndex "slides"
         pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
           loadAndApplyTemplate "templates/layout.html" indexCtx >>=
-          relativizeUrls
+          relativizeUrls >>=
+          deIndexURLs
     match "articles.markdown" $ do
       route $ setExtension "html"
       compile $ do
@@ -87,14 +93,16 @@ main =
               createDefaultIndex "articles"
         pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
           loadAndApplyTemplate "templates/layout.html" indexCtx >>=
-          relativizeUrls
+          relativizeUrls >>=
+          deIndexURLs
     match "about.markdown" $ do
       route $ setExtension "html"
       compile $ do
         let indexCtx = createDefaultIndex "about"
         pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
           loadAndApplyTemplate "templates/layout.html" indexCtx >>=
-          relativizeUrls
+          relativizeUrls >>=
+          deIndexURLs
     match "index.markdown" $ do
       route $ setExtension "html"
       compile $ do
@@ -104,7 +112,8 @@ main =
               createDefaultIndex "main"
         pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
           loadAndApplyTemplate "templates/layout.html" indexCtx >>=
-          relativizeUrls
+          relativizeUrls >>=
+          deIndexURLs
     match "templates/*" $ compile templateBodyCompiler
 
 postCtx :: Context String
@@ -132,7 +141,6 @@ pandocCompilerWithoutToc =
        , writerTOCDepth = 3
        , writerTemplate = Just "<div class=\"content\">$body$</div>"
        })
-
 
 createDefaultIndex :: String -> Context String
 createDefaultIndex groupName =
@@ -163,3 +171,22 @@ myConfiguration =
     { deployCommand =
         "rsync -avz --delete _site/ root@sputnik.private:/srv/www/tech/"
     }
+
+-- | /file.<ext>-> /file/index.<ext>
+directorizeRoute :: Routes
+directorizeRoute =
+  let directorize path = dirs ++ "/index" ++ ext
+        where
+          (dirs, ext) = splitExtension path
+   in customRoute (directorize . toFilePath)
+
+-- | Strips "index.html" from given URL string.
+stripIndex :: String -> String
+stripIndex url =
+  if "index.html" `isSuffixOf` url
+    then take (length url - 10) url
+    else url
+
+-- | remove index.html from links
+deIndexURLs :: Item String -> Compiler (Item String)
+deIndexURLs item = return $ fmap (withUrls stripIndex) item
