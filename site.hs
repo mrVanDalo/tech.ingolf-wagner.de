@@ -53,16 +53,15 @@ main =
         getResourceBody >>=
         loadAndApplyTemplate "templates/remarkjs.html" postCtx >>=
         relativizeUrls
-    -- the new content out there
     matchMetadata
-      "content/**"
+      "articles/**"
       (\meta ->
          case lookupString "draft" meta of
            Just "false" -> True
            Nothing -> True
            _ -> False) $ do
       route $
-        gsubRoute "content/" (const "") `composeRoutes` setExtension "html"
+        gsubRoute "articles/" (const "") `composeRoutes` setExtension "html"
       compile $
         pandocCompilerWithToc >>=
         loadAndApplyTemplate "templates/layout.html" (createDefaultIndex "articles")>>=
@@ -70,9 +69,9 @@ main =
     match "slides.markdown" $ do
       route $ setExtension "html"
       compile $ do
-        newContent <- loadAll "slides/**"
+        slides <- loadAll "slides/**"
         let indexCtx =
-              listField "posts" postCtx (recentFirst $ newContent) `mappend`
+              listField "posts" postCtx (recentFirst $ slides) `mappend`
               createDefaultIndex "slides"
         pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
           loadAndApplyTemplate "templates/layout.html" indexCtx >>=
@@ -80,9 +79,9 @@ main =
     match "articles.markdown" $ do
       route $ setExtension "html"
       compile $ do
-        newContent <- loadAll "content/**"
+        articles <- loadAll "articles/**"
         let indexCtx =
-              listField "posts" postCtx (recentFirst $ newContent) `mappend`
+              listField "posts" postCtx (recentFirst $ articles) `mappend`
               createDefaultIndex "articles"
         pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
           loadAndApplyTemplate "templates/layout.html" indexCtx >>=
@@ -98,9 +97,9 @@ main =
     match "index.markdown" $ do
       route $ setExtension "html"
       compile $ do
-        newContent <- loadAll "content/**"
+        articles <- loadAll "articles/**"
         let indexCtx =
-              listField "posts" postCtx (recentFirst $ newContent) `mappend`
+              listField "posts" postCtx (recentFirst $ articles) `mappend`
               createDefaultIndex "main"
         pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
           loadAndApplyTemplate "templates/layout.html" indexCtx >>=
