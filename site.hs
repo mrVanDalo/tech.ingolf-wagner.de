@@ -9,7 +9,7 @@ import Text.Pandoc.Options
 --------------------------------------------------------------------------------
 main :: IO ()
 main =
-  hakyll $
+  hakyllWith myConfiguration $
     -- copy all images
    do
     match "images/*" $ do
@@ -156,3 +156,10 @@ createDefaultIndex groupName =
           ""
           navigationItems
    in constField "navigation" navigation `mappend` defaultContext
+
+myConfiguration :: Configuration
+myConfiguration =
+  defaultConfiguration
+    { deployCommand =
+        "rsync -avz --delete _site/ root@sputnik.private:/srv/www/tech/"
+    }
