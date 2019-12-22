@@ -396,7 +396,7 @@ in {
   server01 = server01;
   server02 = server02;
   all = pkgs.writeScript "deploy-all-servers"
-    (lib.concatStringSep "\n" [ server01 server02 ]);
+    (lib.concatStringsSep "\n" [ server01 server02 ]);
 }
 
 ```
