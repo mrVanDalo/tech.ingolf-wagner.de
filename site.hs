@@ -65,16 +65,35 @@ main =
         gsubRoute "content/" (const "") `composeRoutes` setExtension "html"
       compile $
         pandocCompilerWithToc >>=
-        loadAndApplyTemplate "templates/layout.html" postCtx >>=
+        loadAndApplyTemplate "templates/layout.html" (createDefaultIndex "articles")>>=
         relativizeUrls
+    match "slides.markdown" $ do
+      route $ setExtension "html"
+      compile $ do
+        newContent <- loadAll "slides/**"
+        let indexCtx =
+              listField "posts" postCtx (recentFirst $ newContent) `mappend`
+              createDefaultIndex "slides"
+        pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
+          loadAndApplyTemplate "templates/layout.html" indexCtx >>=
+          relativizeUrls
+    match "articles.markdown" $ do
+      route $ setExtension "html"
+      compile $ do
+        newContent <- loadAll "content/**"
+        let indexCtx =
+              listField "posts" postCtx (recentFirst $ newContent) `mappend`
+              createDefaultIndex "articles"
+        pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
+          loadAndApplyTemplate "templates/layout.html" indexCtx >>=
+          relativizeUrls
     match "index.markdown" $ do
       route $ setExtension "html"
       compile $ do
         newContent <- loadAll "content/**"
         let indexCtx =
               listField "posts" postCtx (recentFirst $ newContent) `mappend`
-              constField "title" "Home" `mappend`
-              defaultContext
+              createDefaultIndex "main"
         pandocCompilerWithoutToc >>= applyAsTemplate indexCtx >>=
           loadAndApplyTemplate "templates/layout.html" indexCtx >>=
           relativizeUrls
@@ -105,3 +124,26 @@ pandocCompilerWithoutToc =
        , writerTOCDepth = 3
        , writerTemplate = Just "<div class=\"content\">$body$</div>"
        })
+
+
+createDefaultIndex :: String -> Context String
+createDefaultIndex groupName =
+  let navigationItems =
+        [ ("/", "main")
+        , ("/articles.html", "articles")
+        , ("/slides.html", "slides")
+        ]
+      listItem (path, label) active =
+        let listPart content =
+              if active
+                then "<li class=\"active\">" ++ content ++ "<li>"
+                else "<li>" ++ content ++ "</li>"
+            linkPart url content =
+              "<a href=\"" ++ url ++ "\">" ++ content ++ "</a>"
+         in listPart (linkPart path label)
+      navigation =
+        foldl
+          (\result item@(_, name) -> result ++ listItem item (name == groupName))
+          ""
+          navigationItems
+   in constField "navigation" navigation `mappend` defaultContext
