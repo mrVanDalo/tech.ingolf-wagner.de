@@ -2,31 +2,47 @@
 title: Coding for Humans
 date: 2020-01-13
 info: Coding is hard, it seems. I frequently face the same problems.
-draft: true
+draft: false
 ---
 
-# Coding is hard
-
+Coding is hard,
 well it seems so, because I (and others) have usually a hard time to read code from others.
 This is not always the case of course. But it seems that over the time readable code
-from different people apears to me readable because of the same aspects.
-In my experiance readability is not related to a Language.
-It is more related to things like documentational writing style, patterns and testing.
+from different people appears to me readable because of the same aspects.
+In my experience readability is not related to specific languages.
 
+<!-- link zu dem typen der gesagt hat das jeder programmieren kann nur programmieren können so programmieren das andere es verstehen -->
 
-## Writing tests
-Testing your code intensively usually results in a robust and modular,
-which is easy to read and to improve.
+So what makes code readable?
+It depends on a lot of factors, but in this article we talk about
+variable names and context.
 
-So use your testing framework and get familiar with concepts like Dependency Injection, mocking and TDD.
+## Context
 
+With context I mean amount of information you have to "carry"
+to understand the code in front of you.
+The simple rule here is the more context needed the harder
+the code is to understand.
 
+Clearly we can't reduce serious programs to the bare minimum
+of what the programming languages has to offer, we use libraries
+and frameworks. Also programs tend to create it's own context
+which developers have to understand to make larger amount of changes.
 
-# Variable names
+Keeping the context needed to understand your program small is the art form.
+There are various methods on how to do that.
+
+* don't write smart programs
+* use proper variables names
+* modulize your code.
+* fail fast
+* do not queue functions, fall them.
+
+## Variable names
 
 write me
 
-## One letter variable names are a no go
+### One letter variable names are a no go
 
 write me
 

@@ -1,9 +1,9 @@
-# created by cabal2nix 
+# created by cabal2nix
 { mkDerivation, base, filepath, hakyll, pandoc, stdenv }:
 mkDerivation {
-  pname = "techblog-new";
+  pname = "tech.ingolf-wagner.de";
   version = "0.1.0.0";
-  src = /home/palo/dev/techblog-new;
+  src = ./.;
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [ base filepath hakyll pandoc ];
