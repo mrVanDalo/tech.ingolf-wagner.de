@@ -19,5 +19,5 @@ let
     ${pkgs.cabal-install}/bin/cabal run site -- build
     ${pkgs.cabal-install}/bin/cabal run site -- deploy
   '';
-in pkgs.mkShell { buildInputs = with pkgs; [ updateCabal run deploy lessc ]; }
+in pkgs.mkShell { buildInputs = with pkgs; [ updateCabal run deploy lessc zlib ]; }
 
