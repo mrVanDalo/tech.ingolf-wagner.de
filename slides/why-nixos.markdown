@@ -26,7 +26,7 @@ Let&#39;s look at the good parts.
 
   # NixOS Features
 
-* [immutable](https://en.wikipedia.org/wiki/Immutable_object) (not only [idempotent](https://en.wikipedia.org/wiki/Idempotence))
+* [idempotent](https://en.wikipedia.org/wiki/Idempotence) and more.
 * rollbacks (without re-provisioning).
 * powerful [package system](https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/editors/nano/default.nix)
 with [modding](https://nixos.org/nixpkgs/manual/#sec-overrides)
