@@ -2,7 +2,7 @@
 title: "Coding for Humans : naming things"
 date: 2020-01-13
 info: Coding is hard, it seems. I frequently face the same problems. 
-draft: false
+draft: true
 ---
 
 Coding is hard,

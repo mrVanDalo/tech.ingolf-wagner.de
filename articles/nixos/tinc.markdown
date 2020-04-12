@@ -164,8 +164,8 @@ default =
   };
 }
 
-# Gibson specific
-# ---------------
+# Hackbardt specific
+# ------------------
 Gibson =
       enable                = true;
       connectTo             = [ "Gibson" ];

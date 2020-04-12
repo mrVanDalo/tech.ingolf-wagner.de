@@ -21,7 +21,7 @@ had in mind, when they created theses tools.
 Here is an overview of the information flow, and where stuff is stored.
 
 
-![Showing the flow of information and which information is stored where.](/images/notmuch-overview.svg)
+![Showing the flow of information and which information is stored where.](../images/notmuch-overview.svg)
 
 ## Tools
 
