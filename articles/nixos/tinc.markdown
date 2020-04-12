@@ -111,7 +111,7 @@ but for this example we only have one.
 
 Here is the `configuration.nix`.
 First we define the whole topolgy in `default` and
-than we `enable` and configure secret-keys
+then we `enable` and configure secret-keys
 for every computer in `Gibson`, `Hackbardt` and `HAL`
 
 ```
