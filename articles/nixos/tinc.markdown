@@ -119,11 +119,11 @@ let
 
   includePrivateKeys = host: {
     deployment.keys."rsa_key" = {
-      keyFile = ./secrets/"${host}"/rsa_key.priv;
+      keyFile = toString (./secrets/ + "/${host}/rsa_key.priv");
       destDir = "/root/secrets";
     };
     deployment.keys."ed25519_key" = {
-      keyFile = ./secrets/"${host}"/ed25519_key.priv;
+      keyFile = toString (./secrets/ + "/${host}/ed25519_key.priv");
       destDir = "/root/secrets";
     };
   };
@@ -139,7 +139,7 @@ default =
   with lib;
   services.custom.tinc =
   let
-    publicHostFile = host: fileContent ./public/"${host}"/hostfile;
+    publicHostFile = host: lib.fileContents (./public + "/${host}/hostfile");
   in {
     "private" = {
       debugLevel    = 0;
@@ -241,7 +241,7 @@ to configure sub-network routing.
 Achieving this is very simple,
 just add the `tincSubnet` parameter in the `hosts` attribute and your done.
 
-```
+```nix
 ...
 
 default =
@@ -250,7 +250,7 @@ default =
   with lib;
   services.custom.tinc =
   let
-    publicHostFile = name: fileContent ./public/"${name}"/hostfile;
+    publicHostFile = name: lib.fileContents  (./public + "/${host}/hostfile");
   in {
     "private" = {
       debugLevel    = 0;
