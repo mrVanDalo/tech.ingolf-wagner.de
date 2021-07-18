@@ -97,9 +97,9 @@ in {
 
 --
 
-`qtchan` only in a shell
+`gimp` only in a shell
 ```
-nix-shell -p qtchan
+nix-shell -p gimp
 ```
 
 ---
